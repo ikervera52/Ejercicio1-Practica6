@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class Main {
     final static  Scanner sc = new Scanner(System.in);
-    public static String nombre;
-    public static int cantidad;
-    public static LocalDate fecha;
+    public static String nombre, nombreFinal = " ", mayorCantidadFinal = "", nombreFechaFinal = "";
+    public static int cantidad, cantidadFinal = 0;
+    public static LocalDate fecha, fechaFinal = LocalDate.of(2500,12,31);
 
     public static void main(String[] args) {
 
@@ -16,23 +16,23 @@ public class Main {
         //debe mostrar el nombre del producto más largo, el nombre del producto
         //que antes caduca y el nombre del producto del que más unidades se
         //dispone.
-        String nombreLargo = "", mayorCantidad = "", ultimaFecha ="";
+
         for (int i = 1; i <= 2; i++){
             System.out.println("-- Recogida de datos de producto numero " + i + " --");
             nombreProducto();
-             nombreLargo = medidorNombreProducto();
+            medidorNombreProducto();
 
             cantidadProducto();
-             mayorCantidad = mayorCantidadProducto();
+            mayorCantidadProducto();
             sc.nextLine();
 
             fechaProducto();
-             ultimaFecha = ultimaFechaProducto();
+             ultimaFechaProducto();
         }
 
 
 
-        imprimirResultado(nombreLargo, mayorCantidad, ultimaFecha);
+        imprimirResultado();
     }
 
     public static void nombreProducto (){
@@ -40,13 +40,11 @@ public class Main {
         nombre = sc.nextLine();
     }
 
-    public static String medidorNombreProducto (){
-        String nombreFinal = " ";
+    public static void medidorNombreProducto (){
 
         if (nombre.length() > nombreFinal.length()){
             nombreFinal = nombre;
         }
-        return nombreFinal;
     }
 
     public static void fechaProducto (){
@@ -63,15 +61,12 @@ public class Main {
         }
     }
 
-    public static String ultimaFechaProducto (){
-        String nombreFechaFinal = "";
-        LocalDate fechaFinal = LocalDate.of(2500,12,31);
+    public static void ultimaFechaProducto (){
+
         if (fecha.isBefore(fechaFinal)){
             fechaFinal = fecha;
             nombreFechaFinal = nombre;
         }
-
-        return nombreFechaFinal;
     }
 
     public static void cantidadProducto (){
@@ -85,24 +80,18 @@ public class Main {
         }
     }
 
-    public static String mayorCantidadProducto (){
-        String mayorCantidadFinal = "";
-        int cantidadFinal = 0;
+    public static void mayorCantidadProducto (){
 
         if (cantidad > cantidadFinal){
-
             cantidadFinal = cantidad;
             mayorCantidadFinal = nombre;
         }
-
-        return mayorCantidadFinal;
     }
 
-    public static void imprimirResultado (String nombreLargo, String mayorCantidad, String ultimaFecha){
+    public static void imprimirResultado (){
         System.out.println("-- Resultados de producto --");
-        System.out.printf("""
-                El producto con nombre más largo es: %s \s
-                El producto con la fecha de caducidad más antigua es: %s\s
-                El producto con más stock es: %s""" , nombreLargo, mayorCantidad, ultimaFecha);
+        System.out.println("El producto con nombre más largo es: " + nombreFinal);
+        System.out.println("El producto con la fecha de caducidad más antigua es: " + nombreFechaFinal);
+        System.out.println("El producto con más stock es: " + mayorCantidadFinal);
     }
 }
