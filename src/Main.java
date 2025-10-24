@@ -1,23 +1,20 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     final static  Scanner sc = new Scanner(System.in);
     public static String nombre, nombreFinal = " ", mayorCantidadFinal = "", nombreFechaFinal = "";
     public static int cantidad, cantidadFinal = 0;
-    public static LocalDate fecha, fechaFinal = LocalDate.of(2500,12,31);
+    public static LocalDate fecha, fechaFinal = LocalDate.of(3000,12,31);
 
     public static void main(String[] args) {
 
-        //Desarrolla un proyecto que solicite los datos de diez productos
-        //(descripción, número de unidades y fecha de caducidad). El programa
-        //debe mostrar el nombre del producto más largo, el nombre del producto
-        //que antes caduca y el nombre del producto del que más unidades se
-        //dispone.
-
-        for (int i = 1; i <= 2; i++){
+        for (int i = 1; i <= 3; i++){
             System.out.println("-- Recogida de datos de producto numero " + i + " --");
             nombreProducto();
             medidorNombreProducto();
@@ -28,6 +25,8 @@ public class Main {
 
             fechaProducto();
              ultimaFechaProducto();
+
+             System.out.println("------------------------------------------------------");
         }
 
 
@@ -36,8 +35,16 @@ public class Main {
     }
 
     public static void nombreProducto (){
+        Pattern patron = Pattern.compile("^[A-Za-z]+$");
+
         System.out.print("Dame el nombre del producto: ");
         nombre = sc.nextLine();
+        Matcher matcher = patron.matcher(nombre);
+
+        if (!matcher.matches()){
+            System.out.println("El nombre del producto no es valido");
+            nombreProducto();
+        }
     }
 
     public static void medidorNombreProducto (){
@@ -53,6 +60,10 @@ public class Main {
 
             System.out.print("Fecha de caducidad del producto (dd/MM/yyyy): ");
             fecha = LocalDate.parse(sc.nextLine(), formatter);
+        }
+        catch (DateTimeParseException ex){
+            System.out.println("El dato introducido no es valido");
+            fechaProducto();
         }
 
         catch (Exception e){
@@ -73,9 +84,14 @@ public class Main {
         try {
             System.out.print("Dime la cantidad del producto: ");
             cantidad = sc.nextInt();
+            if (cantidad < 0){
+                System.out.println("La cantidad del producto no es valida");
+                cantidadProducto();
+            }
         }
         catch (InputMismatchException e){
-            System.out.println("El valor introducido no es valido");
+            sc.nextLine();
+            System.out.println("El valor introducido tiene que ser numérico");
             cantidadProducto();
         }
     }
@@ -89,9 +105,11 @@ public class Main {
     }
 
     public static void imprimirResultado (){
-        System.out.println("-- Resultados de producto --");
-        System.out.println("El producto con nombre más largo es: " + nombreFinal);
-        System.out.println("El producto con la fecha de caducidad más antigua es: " + nombreFechaFinal);
-        System.out.println("El producto con más stock es: " + mayorCantidadFinal);
+        System.out.printf(""" 
+        -- Resultados de producto --
+        El producto con nombre más largo es: %s
+        El producto con la fecha de caducidad más antigua es: %s | con fecha: %s
+        El producto con más stock es: %s | con Stock: %s
+        """, nombreFinal.toUpperCase(), nombreFechaFinal.toUpperCase(), fechaFinal, mayorCantidadFinal.toUpperCase(), cantidadFinal );
     }
 }
