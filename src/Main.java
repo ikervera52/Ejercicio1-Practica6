@@ -14,27 +14,32 @@ public class Main {
 
     public static void main(String[] args) {
 
-        for (int i = 1; i <= 3; i++){
-            System.out.println("-- Recogida de datos de producto numero " + i + " --");
-            nombreProducto();
-            medidorNombreProducto();
+       try {
+           for (int i = 1; i <= 3; i++){
+               System.out.println("-- Recogida de datos de producto numero " + i + " --");
+               nombreProducto();
+               medidorNombreProducto();
 
-            cantidadProducto();
-            mayorCantidadProducto();
-            sc.nextLine();
+               cantidadProducto();
+               mayorCantidadProducto();
+               sc.nextLine();
 
-            fechaProducto();
-             ultimaFechaProducto();
+               fechaProducto();
+               ultimaFechaProducto();
 
-             System.out.println("------------------------------------------------------");
-        }
+               System.out.println("------------------------------------------------------");
+           }
 
+           imprimirResultado();
 
+       } catch (Exception e) {
+           System.out.println( "A habido un error: " + e.getClass() + "\n"
+                                + "El programa ha terminado");
+       }
 
-        imprimirResultado();
     }
 
-    public static void nombreProducto (){
+    public static void nombreProducto() throws Exception {
         Pattern patron = Pattern.compile("^[A-Za-z]+$");
 
         System.out.print("Dame el nombre del producto: ");
@@ -85,13 +90,12 @@ public class Main {
             System.out.print("Dime la cantidad del producto: ");
             cantidad = sc.nextInt();
             if (cantidad < 0){
-                System.out.println("La cantidad del producto no es valida");
-                cantidadProducto();
+                throw new InputMismatchException();
             }
         }
         catch (InputMismatchException e){
             sc.nextLine();
-            System.out.println("El valor introducido tiene que ser numérico");
+            System.out.println("El valor introducido tiene que ser numérico y mayor a cero");
             cantidadProducto();
         }
     }
@@ -110,6 +114,6 @@ public class Main {
         El producto con nombre más largo es: %s
         El producto con la fecha de caducidad más antigua es: %s | con fecha: %s
         El producto con más stock es: %s | con Stock: %s
-        """, nombreFinal.toUpperCase(), nombreFechaFinal.toUpperCase(), fechaFinal, mayorCantidadFinal.toUpperCase(), cantidadFinal );
+        """, nombreFinal.toUpperCase(), nombreFechaFinal.toUpperCase(), fechaFinal.toString(), mayorCantidadFinal.toUpperCase(), cantidadFinal );
     }
 }
